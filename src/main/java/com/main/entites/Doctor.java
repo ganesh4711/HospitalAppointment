@@ -26,6 +26,16 @@ public class Doctor {
     private String type;
     private Boolean availability;
     private Boolean status;
+    
+	public Doctor() {
+		super();
+	}
+	
+	public Doctor(Integer doctorId) {
+		super();
+		this.doctorId = doctorId;
+	}
+
 	public Integer getDoctorId() {
 		return doctorId;
 	}

@@ -38,7 +38,7 @@ public class User {
     @JsonIgnore
     private List<UserRole> userRoles;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
     private Admin admin;
 
@@ -46,11 +46,11 @@ public class User {
     @JsonIgnore
     private ReceptionStaff receptionStaff;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
     private Doctor doctor;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
     private Patient patient;
     

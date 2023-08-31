@@ -9,11 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.Data;
 
 @Entity
-@Data
+@Table(name="appointments")
 public class Appointment {
 
     @Id
@@ -35,6 +36,50 @@ public class Appointment {
     private Date dateOfAppointment;
     private Time timeOfAppointment;
     private Boolean status;
+ // Getter and setter methods
+    
+	public Integer getAppointmentId() {
+		return appointmentId;
+	}
+	public void setAppointmentId(Integer appointmentId) {
+		this.appointmentId = appointmentId;
+	}
+	public Doctor getDoctor() {
+		return doctor;
+	}
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+	public Patient getPatient() {
+		return patient;
+	}
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+	public ReceptionStaff getReceptionStaff() {
+		return receptionStaff;
+	}
+	public void setReceptionStaff(ReceptionStaff receptionStaff) {
+		this.receptionStaff = receptionStaff;
+	}
+	public Date getDateOfAppointment() {
+		return dateOfAppointment;
+	}
+	public void setDateOfAppointment(Date dateOfAppointment) {
+		this.dateOfAppointment = dateOfAppointment;
+	}
+	public Time getTimeOfAppointment() {
+		return timeOfAppointment;
+	}
+	public void setTimeOfAppointment(Time timeOfAppointment) {
+		this.timeOfAppointment = timeOfAppointment;
+	}
+	public Boolean getStatus() {
+		return status;
+	}
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 
-    // Getter and setter methods
+    
 }

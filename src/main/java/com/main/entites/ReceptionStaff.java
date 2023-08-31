@@ -20,6 +20,13 @@ public class ReceptionStaff {
 
     private String staffName;
     private Boolean status;
+    
+	public ReceptionStaff() {
+		super();
+	}
+	public ReceptionStaff(int staffId) {
+		this.receptionStaffId=staffId;
+	}
 	public Integer getReceptionStaffId() {
 		return receptionStaffId;
 	}

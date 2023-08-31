@@ -23,7 +23,12 @@ public class UserController {
     private UserService userService;
     @Autowired
     private LogService logService;
-
+    
+    @GetMapping("/myDetails")   //user
+    public User getUser() {
+        return userService.getUserDetails();
+    }
+    
     @GetMapping("/all/users")   //admin
     public List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -31,30 +36,19 @@ public class UserController {
 
     @GetMapping("/user/{userId}") //admin
     public User getUserById(@PathVariable String userId) {
-    	try {
+    	
             Integer userIdValue = Integer.parseInt(userId);
            
-            User user = userService.getUserById(userIdValue);
-            if (user != null) {
-                return user;
-            } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
-            }
-        } catch (NumberFormatException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User Id format!", e);
-        }
+            return userService.getUserById(userIdValue);
+     
     }
 
     @PostMapping("/user-create")
     public User createUser(@RequestBody User user) {
-    	try {
-
-            User createdUser = userService.createUser(user);
+    	    User createdUser = userService.createUser(user);
             logService.logUserCreation(createdUser.getUserId());
             return createdUser;
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid User data!", e.getCause());
-		}
+		
          
     }
 

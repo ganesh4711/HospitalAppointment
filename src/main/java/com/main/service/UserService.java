@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.main.entites.User;
+import com.main.globalExcp.BussinessException;
 import com.main.repos.UserRepository;
 
 @Service
@@ -24,26 +25,25 @@ public class UserService {
 
     public User getUserById(Integer userId) {
     	 if (userId <= 0) {
-             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Id must be a positive number!");
+             throw new BussinessException("User Id must be a positive number!");
          }
          
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId).get();
     }
 
     public User createUser(User user) {
         // Perform validation and registration logic
     	
-      if (user.getEmail().contains(".com")) {
-    	  if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-          	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "mail already in use...");
+    	  if (user.getName().isEmpty() || user.getName().length()==0) {
+          	throw new BussinessException("name should not be empty...");
           }
-      }
+      
         return userRepository.save(user);       
         
     }
     public boolean deactivateUser() {                          //for user
-    	int uid=userRepository.getUserIdByMail("bb1@example.com");
-        User user = userRepository.findById(uid).orElse(null);
+    	int uid=20; //authenticated user
+        User user = userRepository.findById( uid ).get(); 
         if (user != null) {
             user.setStatus(false); // Set status to 0 (deactivated)
             userRepository.save(user);
@@ -56,14 +56,16 @@ public class UserService {
 
     public boolean deactivateUser(Integer userId) { 
     	int dltBy=userRepository.getUserIdByMail("bb1@example.com");  // for admin user id
-        User user = userRepository.findById(userId).orElse(null);
-        if (user != null) {
+        User user = userRepository.findById(userId).get();
             user.setStatus(false); // Set status to 0 (deactivated)
             userRepository.save(user);
             logService.logUserDelete(userId, dltBy);
             return true;
-        } else {
-            return false;
-        }
+       
     }
+
+	public User getUserDetails() {
+		int id=8;  //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+		return userRepository.findById(id).get();
+	}
 }
