@@ -55,11 +55,10 @@ public class UserService {
     }
 
     public boolean deactivateUser(Integer userId) { 
-    	int dltBy=userRepository.getUserIdByMail("bb1@example.com");  // for admin user id
         User user = userRepository.findById(userId).get();
             user.setStatus(false); // Set status to 0 (deactivated)
             userRepository.save(user);
-            logService.logUserDelete(userId, dltBy);
+            logService.logUserDelete(userId, dltBy);  //dltBy obtained from authenticated admin
             return true;
        
     }
