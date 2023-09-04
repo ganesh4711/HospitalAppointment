@@ -2,11 +2,16 @@ package com.main.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.main.RequestDto.AdminDto;
+import com.main.RequestDto.AppointmentDto;
+import com.main.entites.Admin;
 import com.main.entites.Appointment;
 import com.main.entites.ReceptionStaff;
 import com.main.repos.AppointmentRepository;
@@ -22,13 +27,20 @@ public class AppointmentsService {
 	private DoctorRepository doctorRepo;
 	@Autowired
 	private PatientRepository patientRepo;
+	@Autowired
+	private ModelMapper modelmapper;
+	
+	public AppointmentDto convertEntityToDto(Appointment appointment ) {
+		modelmapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		return modelmapper.map(appointment, AppointmentDto.class);
+	}
 	
 	public List<Appointment> getAppointments(){
 		return appointRepo.findAll();
 	}
 	
 	public List<Appointment> getAppointmentsOfUser(){
-		int uid = 19;       //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+		int uid = 26;       //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
         int patientId = patientRepo.findByUser_UserId(uid).getPatientId();
         return appointRepo.findByPatient_PatientId(patientId);
 	}

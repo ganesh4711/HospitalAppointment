@@ -46,7 +46,7 @@ public class GlobalExcptionController {
 	}
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<String> handle(Exception e){
-		return new ResponseEntity<String>("Arguments not matched",HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>("Arguments not matched ",HttpStatus.BAD_REQUEST);
 		
 	}
 }

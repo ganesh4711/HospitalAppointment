@@ -8,10 +8,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="admins")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Admin {
 
     @Id
@@ -24,30 +29,5 @@ public class Admin {
 
     private String adminName;
     private Boolean status;
-	public Integer getAdminId() {
-		return adminId;
-	}
-	public void setAdminId(Integer adminId) {
-		this.adminId = adminId;
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public String getAdminName() {
-		return adminName;
-	}
-	public void setAdminName(String adminName) {
-		this.adminName = adminName;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
 
-   
 }

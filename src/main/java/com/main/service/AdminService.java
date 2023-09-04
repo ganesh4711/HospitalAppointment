@@ -2,9 +2,12 @@ package com.main.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.main.RequestDto.AdminDto;
 import com.main.entites.Admin;
 import com.main.entites.Log;
 import com.main.repos.AdminRepository;
@@ -16,16 +19,26 @@ public class AdminService {
 	private AdminRepository adminRepo;
 	@Autowired
 	private LogRepository logRepo;
-  public List<Admin> getAll(){
-	  return adminRepo.findAll();
-  }
-public Admin createAdmin(Admin admin) {
+	@Autowired
+	private ModelMapper modelmapper;
 	
-	return null;
-}
-public List<Log> getLogs() {
-	
-	return logRepo.findAll();
-}
-	
+	public AdminDto convertEntityToDto(Admin admin ) {
+		modelmapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		return modelmapper.map(admin, AdminDto.class);
+	}
+
+	public List<Admin> getAll() {
+		return adminRepo.findAll();
+	}
+
+	public Admin createAdmin(Admin admin) {
+
+		return null;
+	}
+
+	public List<Log> getLogs() {
+
+		return logRepo.findAll();
+	}
+
 }

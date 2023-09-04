@@ -2,43 +2,66 @@ package com.main.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import com.main.RequestDto.UserDto;
 import com.main.entites.User;
 import com.main.globalExcp.BussinessException;
 import com.main.repos.UserRepository;
 
-@Service
+@Service   
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private LogService logService;
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @Autowired
+	private ModelMapper modelmapper;
+	
+	public UserDto convertEntityToDto(User user ) {
+	
+		return modelmapper.map(user, UserDto.class);
+	}
+	public User convertDtoToEntity(UserDto userdto ) {
+		
+		return modelmapper.map(userdto, User.class);
+	}
+    
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll()
+        		.stream()
+                .map(this::convertEntityToDto)
+                .toList();
     }
 
-    public User getUserById(Integer userId) {
-    	 if (userId <= 0) {
-             throw new BussinessException("User Id must be a positive number!");
-         }
-         
-        return userRepository.findById(userId).get();
+    public UserDto getUserDetails() {
+    	int uid=2;     //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+        return convertEntityToDto(userRepository.findById(uid).get());
     }
 
-    public User createUser(User user) {
+    public UserDto getUserById(int uid){
+        return convertEntityToDto(userRepository.findById(uid).get());
+    }
+
+    public UserDto createUser(UserDto userdto) {
         // Perform validation and registration logic
     	
-    	  if (user.getName().isEmpty() || user.getName().length()==0) {
+    	  if (userdto.getName().isEmpty() || userdto.getName().length()==0) {
           	throw new BussinessException("name should not be empty...");
           }
-      
-        return userRepository.save(user);       
+    	  if (userdto!=null) {
+    		  
+    		 userRepository.save(convertDtoToEntity(userdto));
+    		 return userdto;
+            }
+    	  else 
+    		  throw new BussinessException(HttpStatus.NOT_ACCEPTABLE,"user cannot be null...");
+               
         
     }
     public boolean deactivateUser() {                          //for user
@@ -63,8 +86,5 @@ public class UserService {
        
     }
 
-	public User getUserDetails() {
-		int id=8;  //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-		return userRepository.findById(id).get();
-	}
+
 }
