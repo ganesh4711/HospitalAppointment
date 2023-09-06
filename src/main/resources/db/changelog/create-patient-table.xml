@@ -1,0 +1,27 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="create-patients-table" author="yourname">
+        <createTable tableName="patients">
+            <column name="patient_id" type="INT" autoIncrement="true" startWith="400" incrementBy="1">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+
+            </column>
+            <column name="user_id" type="INT" >
+                <constraints unique="true" />
+            </column>
+            <column name="patient_name" type="VARCHAR(50)"/>
+            <column name="status" type="BIT" >
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="patients"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"
+                                 constraintName="FK_patients_users"/>
+    </changeSet>
+
+</databaseChangeLog>

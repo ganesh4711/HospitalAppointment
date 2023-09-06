@@ -2,12 +2,18 @@ package com.main.globalExcp;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.MethodArgumentBuilder;
 
@@ -45,8 +51,29 @@ public class GlobalExcptionController {
 				 new ErrorResponse(status,e.getMessage()),status);	
 	}
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	public ResponseEntity<String> handle(Exception e){
-		return new ResponseEntity<String>("Arguments not matched ",HttpStatus.BAD_REQUEST);
-		
+	public ResponseEntity<ErrorResponse> handle(){
+		var status=HttpStatus.INTERNAL_SERVER_ERROR;
+
+		return new ResponseEntity<>(
+				new ErrorResponse("Meathod Aruguments MisMatched"),status);
+	}
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(MismatchedInputException.class)
+	public  ResponseEntity<ErrorResponse> handleMissMatchedArgu(){
+		return new ResponseEntity<>(
+				new ErrorResponse("MisMatched Input"),HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Map<String, String> handleValidationExceptions(
+			MethodArgumentNotValidException ex) {
+		Map<String, String> errors = new HashMap<>();
+		ex.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put(fieldName, errorMessage);
+		});
+		return errors;
 	}
 }

@@ -1,86 +1,34 @@
 package com.main.RequestDto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
-    private Integer userId;
-
+	@NotBlank( message = "user name can't be Blank")
     private String name;
+	@NotNull
     private String address;
+	@Pattern(regexp = "^\\+\\d{2}[6-9]\\d{9}$")
     private String phNo;
+	@Email(message = "Invalid Email")
     private String email;
+	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$")
     private String password;
-   
+
     private Boolean status;
-
-  
-    
-	public UserDto() {
-		super();
-	}
-
-	public UserDto(Integer userId2) {
-		this.userId=userId2;
-	}
 
 	public UserDto(Integer userId, String name) {
 	}
 
-	public Integer getUserId() {
-		return userId;
-	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPhNo() {
-		return phNo;
-	}
-
-	public void setPhNo(String phNo) {
-		this.phNo = phNo;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-
-    
 }

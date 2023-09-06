@@ -2,7 +2,6 @@ package com.main.service;
 
 import com.main.RequestDto.PatientDto;
 
-import com.main.RequestDto.UserDto;
 import com.main.entites.Patient;
 
 import com.main.entites.User;
@@ -11,6 +10,8 @@ import com.main.repos.PatientRepository;
 import com.main.repos.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,21 +40,29 @@ public class PatientService {
                                                       .toList();
         return patientDtoList;
     }
+    public Page<PatientDto> getAllPatients(int page, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        Page<Patient> patientsPage = patientRepository.findAll(pageRequest);
+
+        return patientsPage.map(this::convertEntityToDto);
+    }
     public PatientDto getPatientDetails(){
-        int pid=409;         //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-        var patientDto=convertEntityToDto(patientRepository.findById(pid).get());
+        int patientId=409;         //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+        var patientDto=convertEntityToDto(patientRepository.findById(patientId).get());
         return  patientDto;
     }
     public PatientDto addPatient(PatientDto patientDto){
         User user=userRepository.findById(25).get();
-       if (patientDto!=null){
-            patientDto.setPatientName(user.getName());
-              patientDto.setStatus(true);
-              Patient patient=convertDtoToEntity(patientDto);
-                return convertEntityToDto(patientRepository.save(patient));
+       if (user.getStatus()) {
+           if (patientDto != null) {
+               patientDto.setPatientName(user.getName());
+               patientDto.setStatus(true);
+               Patient patient = convertDtoToEntity(patientDto);
+               return convertEntityToDto(patientRepository.save(patient));
 
+           } else throw new BussinessException("Patient Must not Be Null");
        }
-       else throw new BussinessException("Patient Must not Be Null");
+       else throw new BussinessException("Deactivated User Unable to Process...");
     }
     public Boolean delete(){
         int uid=25;         //SecurityContextHolder.getContext().getAuthentication().authentication.getName();

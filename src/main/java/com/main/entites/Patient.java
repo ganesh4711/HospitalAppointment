@@ -17,6 +17,7 @@ public class Patient {
     private User user;
 
     private String patientName;
+
     private Boolean status;
     
 	public Patient(Integer patientId) {

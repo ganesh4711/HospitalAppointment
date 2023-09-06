@@ -40,23 +40,22 @@ public class UserService {
     }
 
     public UserDto getUserDetails() {
-    	int uid=2;     //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-        return convertEntityToDto(userRepository.findById(uid).get());
+    	int userId=244;     //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+       User user=userRepository.findById(userId).get();
+
+        return convertEntityToDto(user);
     }
 
-    public UserDto getUserById(int uid){
-        return convertEntityToDto(userRepository.findById(uid).get());
+    public UserDto getUserById(int userId){
+        return convertEntityToDto(userRepository.findById(userId).get());
     }
 
     public UserDto createUser(UserDto userdto) {
-        // Perform validation and registration logic
-    	
-    	  if (userdto.getName().isEmpty() || userdto.getName().length()==0) {
-          	throw new BussinessException("name should not be empty...");
-          }
+
     	  if (userdto!=null) {
-    		  
-    		 userRepository.save(convertDtoToEntity(userdto));
+    		  User user=convertDtoToEntity(userdto);
+    		 userRepository.save(user);
+              logService.logUserCreation(user.getUserId());
     		 return userdto;
             }
     	  else 
@@ -65,12 +64,12 @@ public class UserService {
         
     }
     public boolean deactivateUser() {                          //for user
-    	int uid=20; //authenticated user
-        User user = userRepository.findById( uid ).get(); 
+    	int userId=20; //authenticated user
+        User user = userRepository.findById( userId ).get();
         if (user != null) {
             user.setStatus(false); // Set status to 0 (deactivated)
             userRepository.save(user);
-            logService.logUserDelete(uid);
+            logService.logUserDelete(userId);
             return true;
         } else {
             return false;
@@ -81,7 +80,7 @@ public class UserService {
         User user = userRepository.findById(userId).get();
             user.setStatus(false); // Set status to 0 (deactivated)
             userRepository.save(user);
-            logService.logUserDelete(userId, dltBy);  //dltBy obtained from authenticated admin
+            logService.logUserDelete(userId,1);  //dltBy obtained from authenticated admin
             return true;
        
     }

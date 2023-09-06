@@ -1,28 +1,18 @@
 package com.main.RequestDto;
+
+import javax.validation.constraints.NotBlank;
+
 public class PatientDto {
-
-   
-    private Integer patientId;
-
    
     private UserDto user;
-
+	@NotBlank
     private String patientName;
     private Boolean status;
-    
-	public PatientDto(Integer patientId) {
-		super();
-		this.patientId = patientId;
-	}
+
 	public PatientDto() {
 		super();
 	}
-	public Integer getPatientId() {
-		return patientId;
-	}
-	public void setPatientId(Integer patientId) {
-		this.patientId = patientId;
-	}
+
 	public UserDto getUser() {
 		return user;
 	}

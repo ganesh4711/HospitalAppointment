@@ -35,7 +35,6 @@ public class ErrorResponse {
 
 	public ErrorResponse(HttpStatus httpStatus, String message, String stackTrace) {
 		this(httpStatus, message);
-
 		this.stackTrace = stackTrace;
 	}
 
@@ -45,7 +44,11 @@ public class ErrorResponse {
 		this.data = data;
 	}
 
-	public Date getTimestamp() {
+    public ErrorResponse(String  message) {
+		this.message=message;
+    }
+
+    public Date getTimestamp() {
 		return timestamp;
 	}
 
