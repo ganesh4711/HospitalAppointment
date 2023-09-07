@@ -1,15 +1,18 @@
 package com.main;
 
 
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
+@Data
 public class ApiResponse<T> {
     private int code;
     private String status;
     private String message;
     private Map<String,Object> data;
+    private Map<String,Object> meta;
 
     public ApiResponse() {
 
@@ -22,40 +25,14 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
+
     public ApiResponse(HttpStatus httpStatus, String message, Map<String,Object> data) {
         this(httpStatus,message);
         this.data = data;
     }
-
-    public int getCode() {
-        return code;
+    public ApiResponse(HttpStatus status, String message, Map<String, Object> data, Map<String, Object> meta) {
+        this(status,message,data);
+        this.meta = meta;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Map<String, Object> getData() {
-        return data;
-    }
-
-    public void setData(Map<String, Object> data) {
-        this.data = data;
-    }
 }

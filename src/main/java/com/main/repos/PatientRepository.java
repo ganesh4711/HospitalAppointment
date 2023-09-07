@@ -9,5 +9,5 @@ import com.main.entites.Patient;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
-	Patient findByUser_UserId(int uid);
+	Patient findByUser_Id(int uid);
 }

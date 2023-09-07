@@ -2,10 +2,11 @@ package com.main.globalExcp;
 
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+@AllArgsConstructor(staticName = "build")
 public class ErrorResponse {
 	// customizing timestamp serialization format
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
@@ -31,6 +32,17 @@ public class ErrorResponse {
 		this.code = httpStatus.value();
 		this.status = httpStatus.name();
 		this.message = message;
+	}
+
+	public ErrorResponse(String status, String message, Object data) {
+		this.status = status;
+		this.message = message;
+		this.stackTrace = stackTrace;
+		this.data = data;
+	}
+
+	public ErrorResponse(Object data) {
+		this.data = data;
 	}
 
 	public ErrorResponse(HttpStatus httpStatus, String message, String stackTrace) {

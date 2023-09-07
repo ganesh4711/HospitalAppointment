@@ -14,10 +14,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.MethodArgumentBuilder;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExcptionController {
 
 	@ExceptionHandler(NoSuchElementException.class)
@@ -64,16 +65,22 @@ public class GlobalExcptionController {
 				new ErrorResponse("MisMatched Input"),HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@ExceptionHandler(IllegalArgumentException.class)
+	public  ResponseEntity<ErrorResponse> handleIllegalArgu(Exception e){
+		return new ResponseEntity<>(
+				new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public Map<String, String> handleValidationExceptions(
+	public ErrorResponse handleValidationExceptions(
 			MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();
-		ex.getBindingResult().getAllErrors().forEach((error) -> {
-			String fieldName = ((FieldError) error).getField();
-			String errorMessage = error.getDefaultMessage();
-			errors.put(fieldName, errorMessage);
+		ex.getBindingResult().getFieldErrors().forEach((error) -> {
+			errors.put(error.getField(),error.getDefaultMessage());
 		});
-		return errors;
+		ErrorResponse response=new ErrorResponse(HttpStatus.BAD_REQUEST,"Invalid User Data");
+		response.setData(errors);
+		return response;
 	}
 }

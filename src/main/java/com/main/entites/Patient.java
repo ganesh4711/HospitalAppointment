@@ -3,9 +3,12 @@ package com.main.entites;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="patients")
+@Data
+@NoArgsConstructor
 public class Patient {
 
     @Id
@@ -24,33 +27,4 @@ public class Patient {
 		super();
 		this.patientId = patientId;
 	}
-	public Patient() {
-		super();
-	}
-	public Integer getPatientId() {
-		return patientId;
-	}
-	public void setPatientId(Integer patientId) {
-		this.patientId = patientId;
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public String getPatientName() {
-		return patientName;
-	}
-	public void setPatientName(String patientName) {
-		this.patientName = patientName;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-    
-    
 }

@@ -1,36 +1,18 @@
 package com.main.RequestDto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotBlank;
 
+@Data
+@NoArgsConstructor
 public class PatientDto {
-   
-    private UserDto user;
-	@NotBlank
+    private Integer patientId;
+    @NotBlank
     private String patientName;
+    private UserDto user;
+
     private Boolean status;
 
-	public PatientDto() {
-		super();
-	}
-
-	public UserDto getUser() {
-		return user;
-	}
-	public void setUser(UserDto user) {
-		this.user = user;
-	}
-	public String getPatientName() {
-		return patientName;
-	}
-	public void setPatientName(String patientName) {
-		this.patientName = patientName;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-    
-    
 }

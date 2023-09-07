@@ -41,18 +41,18 @@ public class AppointmentsService {
 	
 	public List<Appointment> getAppointmentsOfUser(){
 		int uid = 26;       //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-        int patientId = patientRepo.findByUser_UserId(uid).getPatientId();
+        int patientId = patientRepo.findByUser_Id(uid).getPatientId();
         return appointRepo.findByPatient_PatientId(patientId);
 	}
 	public List<Appointment> getAppointmentsOfDoctor(){
 		  int uid = 6;       //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-      int doctorId = doctorRepo.findByUser_UserId(uid).getDoctorId();
+      int doctorId = doctorRepo.findByUser_Id(uid).getDoctorId();
       return appointRepo.findByDoctor_DoctorId(doctorId);
 	}
      
 	public Appointment fixAppointment(Appointment appointment) {
-		if(patientRepo.findById(appointment.getPatient().getPatientId()) != null ) {
-			if (doctorRepo.findById(appointment.getDoctor().getDoctorId())!= null) {
+		if(patientRepo.findById(appointment.getPatient().getPatientId()).isPresent()) {
+			if (doctorRepo.findById(appointment.getDoctor().getDoctorId()).isPresent()) {
 				appointment.setReceptionStaff(new ReceptionStaff(301));    //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
 				return appointRepo.save(appointment);
 			}

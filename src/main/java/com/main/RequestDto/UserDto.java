@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+	private int userId;
 
 	@NotBlank( message = "user name can't be Blank")
     private String name;
@@ -20,8 +21,10 @@ public class UserDto {
     private String address;
 	@Pattern(regexp = "^\\+\\d{2}[6-9]\\d{9}$")
     private String phNo;
+	@NotNull
 	@Email(message = "Invalid Email")
     private String email;
+	@NotNull
 	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$")
     private String password;
 
