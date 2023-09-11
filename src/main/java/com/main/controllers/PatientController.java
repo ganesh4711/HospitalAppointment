@@ -6,16 +6,30 @@ import com.main.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/patients")
 public class PatientController {
     @Autowired
     private PatientService patientService;
+    /**
+     *
+     * @return patient info
+     */
+    @GetMapping
+    public ApiResponse<PatientDto> retrivePatientDetails() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("Details", patientService.getPatientDetails());
+        return new ApiResponse<>(HttpStatus.OK, "success", data);
+    }
 
     /**
      *
@@ -66,7 +80,7 @@ public class PatientController {
         if (offset < 1 || pageSize < 1) {
             throw new IllegalArgumentException();
         }
-        Page<PatientDto> allPatientsWithPagination = patientService.findAllUserWithPaginationSorting((offset-1), pageSize,field);
+        Page<PatientDto> allPatientsWithPagination = patientService.findAllPatientsWithPaginationSorting((offset-1), pageSize,field);
         if (offset <= allPatientsWithPagination.getTotalPages()) {
             Map<String, Object> data = new HashMap<>();
             data.put("user", allPatientsWithPagination.getContent());
@@ -82,24 +96,15 @@ public class PatientController {
             return new ApiResponse<>(HttpStatus.NO_CONTENT, "Empty page");
     }
 
-    /**
-     *
-     * @return patient info
-     */
-    @GetMapping
-    public ApiResponse<PatientDto> retrivePatientDetails() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("Details", patientService.getPatientDetails());
-        return new ApiResponse<>(HttpStatus.OK, "sucess", data);
-    }
+
 
     /**
      *
      * @param patientDto object
      * @return patient info
      */
-    @PostMapping("/")
-    public PatientDto addPatient(@RequestBody PatientDto patientDto) {
+    @PostMapping("/signup")
+    public PatientDto addPatient(@RequestBody @Valid PatientDto patientDto) {
         return patientService.addPatient(patientDto);
     }
 
@@ -107,10 +112,17 @@ public class PatientController {
      *
      * @return patient status
      */
-    @DeleteMapping("/")  //user
+    @DeleteMapping  //user
     public ApiResponse<Void> patientDeleted() {
-        if (patientService.delete()) {
+        if (patientService.deletePatient()) {
             return new ApiResponse<>(HttpStatus.NO_CONTENT, "Deleted");
         } else return new ApiResponse<>(HttpStatus.NOT_FOUND, "Patient is not found");
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deletePatientWithId(@PathVariable int id){
+        if (patientService.deletePatientWithId(id)){
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.NO_CONTENT,"Patient Deleted"),HttpStatus.NO_CONTENT);
+        }
+        else  throw new NoSuchElementException();
     }
 }

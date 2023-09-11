@@ -2,7 +2,6 @@ package com.main.service;
 
 import com.main.RequestDto.PatientDto;
 
-import com.main.RequestDto.UserDto;
 import com.main.entites.Patient;
 
 import com.main.entites.User;
@@ -18,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +39,19 @@ public class PatientService {
         return modelMapper.map(patientDto, Patient.class);
     }
 
+    /**
+     *
+     * @return patient info
+     */
+    public PatientDto getPatientDetails() {
+        int patientId = 409;         //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+        return convertEntityToDto(patientRepository.findById(patientId).get());
+    }
+
+    /**
+     *
+     * @return group of patients info
+     */
     public List<PatientDto> getAllPatient() {          //admin
         List<PatientDto> patientDtoList = patientRepository.findAll()
                 .stream()
@@ -66,7 +79,7 @@ public class PatientService {
      * @param field    to be sorted
      * @return page
      */
-    public Page<PatientDto> findAllUserWithPaginationSorting(int offSet, int pagesize, String field) {
+    public Page<PatientDto> findAllPatientsWithPaginationSorting(int offSet, int pagesize, String field) {
 
         Page<Patient> patientPage = patientRepository.findAll(PageRequest.of(offSet, pagesize, Sort.by(field)));
         List<PatientDto> userDtoList = patientPage.getContent().stream()
@@ -77,11 +90,11 @@ public class PatientService {
     }
 
 
-    public PatientDto getPatientDetails() {
-        int patientId = 409;         //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-        return convertEntityToDto(patientRepository.findById(patientId).get());
-    }
-
+    /**
+     *
+     * @param  patientDto  to add
+     * @return patient info
+     */
     public PatientDto addPatient(PatientDto patientDto) {
         User user = userRepository.findById(25).get();
         if (user.getStatus()) {
@@ -95,7 +108,11 @@ public class PatientService {
         } else throw new BussinessException("Deactivated User Unable to Process...");
     }
 
-    public Boolean delete() {
+    /**
+     *
+     * @return STATUS
+     */
+    public Boolean deletePatient() {
         int uid = 25;         //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
         Patient patient = patientRepository.findByUser_Id(uid);
         if (patient != null) {
@@ -106,4 +123,18 @@ public class PatientService {
             return false;
     }
 
+    /**
+     *
+     * @param id patient to be deactivated
+     * @return execution status
+     */
+    public boolean deletePatientWithId(int id) {
+        Optional<Patient> optional = patientRepository.findById(id);
+        if (optional.isPresent()){
+            optional.get().setStatus(false);
+            return true;
+        }
+        else
+            return false;
+    }
 }

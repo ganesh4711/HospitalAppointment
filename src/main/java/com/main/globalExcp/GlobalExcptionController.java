@@ -72,13 +72,15 @@ public class GlobalExcptionController {
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
+	//@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ErrorResponse handleValidationExceptions(
 			MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();
+
 		ex.getBindingResult().getFieldErrors().forEach((error) -> {
-			errors.put(error.getField(),error.getDefaultMessage());
+								errors.put(error.getField(),error.getDefaultMessage());
 		});
+
 		ErrorResponse response=new ErrorResponse(HttpStatus.BAD_REQUEST,"Invalid User Data");
 		response.setData(errors);
 		return response;

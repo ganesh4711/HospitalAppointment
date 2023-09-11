@@ -19,6 +19,7 @@ public class UserDto {
     private String name;
 	@NotNull
     private String address;
+
 	@Pattern(regexp = "^\\+\\d{2}[6-9]\\d{9}$")
     private String phNo;
 	@NotNull

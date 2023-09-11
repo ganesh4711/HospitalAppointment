@@ -39,6 +39,16 @@ public class UserService {
     }
 
     /**
+     * @return user info
+     */
+    public UserDto getUserDetails() {
+        int userId = 24;     //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+        User user = userRepository.findById(userId).get();
+
+        return convertEntityToDto(user);
+    }
+
+    /**
      * @return group of user
      */
     public List<UserDto> getAllUsers() {
@@ -84,15 +94,7 @@ public class UserService {
         return new PageImpl<>(userDtoList, userPage.getPageable(), userPage.getTotalElements());
     }
 
-    /**
-     * @return user info
-     */
-    public UserDto getUserDetails() {
-        int userId = 24;     //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-        User user = userRepository.findById(userId).get();
 
-        return convertEntityToDto(user);
-    }
 
     /**
      * @param userId id of user

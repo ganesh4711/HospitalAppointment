@@ -1,19 +1,26 @@
 package com.main.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.main.RequestDto.PatientDto;
+import com.main.entites.*;
+import com.main.globalExcp.BussinessException;
+import com.main.repos.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.main.RequestDto.AdminDto;
 import com.main.RequestDto.AppointmentDto;
-import com.main.entites.Admin;
-import com.main.entites.Appointment;
-import com.main.entites.ReceptionStaff;
 import com.main.repos.AppointmentRepository;
 import com.main.repos.DoctorRepository;
 import com.main.repos.PatientRepository;
@@ -28,16 +35,52 @@ public class AppointmentsService {
 	@Autowired
 	private PatientRepository patientRepo;
 	@Autowired
-	private ModelMapper modelmapper;
+	private ModelMapper modelMapper;
 	
 	public AppointmentDto convertEntityToDto(Appointment appointment ) {
-		modelmapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-		return modelmapper.map(appointment, AppointmentDto.class);
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		return modelMapper.map(appointment, AppointmentDto.class);
+	}
+	public Appointment convertDtoToEntity(AppointmentDto appointmentDto) {
+
+		return modelMapper.map(appointmentDto,Appointment.class);
 	}
 	
 	public List<Appointment> getAppointments(){
 		return appointRepo.findAll();
 	}
+
+//	-------------------------------------
+
+
+
+
+
+	/**
+	 *
+	 * @return group of patients info
+	 */
+	public List<AppointmentDto> getAllPatient() {          //admin
+		List<AppointmentDto> appointmentList = appointRepo.findAll()
+				.stream()
+				.map(this::convertEntityToDto)
+				.toList();
+		return appointmentList;
+	}
+	/**
+	 * @param offSet   page
+	 * @param pagesize of the page
+	 * @return page
+	 */
+	public Page<AppointmentDto> findAllUserWithPagination(int offSet, int pagesize) {
+		Page<Appointment> appointmentPage = appointRepo.findAll(PageRequest.of(offSet, pagesize));
+		List<AppointmentDto> appointmentDtoList = appointmentPage.getContent().stream()
+				.map(this::convertEntityToDto)
+				.collect(Collectors.toList());
+
+		return new PageImpl<>(appointmentDtoList, appointmentPage.getPageable(), appointmentPage.getTotalElements());
+	}
+
 	
 	public List<Appointment> getAppointmentsOfUser(){
 		int uid = 26;       //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
