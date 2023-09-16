@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -92,20 +93,21 @@ public class PatientService {
 
     /**
      *
-     * @param  patientDto  to add
+     * @param  userId  to add
      * @return patient info
      */
-    public PatientDto addPatient(PatientDto patientDto) {
-        User user = userRepository.findById(25).get();
-        if (user.getStatus()) {
-            if (patientDto != null) {
-                patientDto.setPatientName(user.getName());
-                patientDto.setStatus(true);
-                Patient patient = convertDtoToEntity(patientDto);
+    public PatientDto addPatient(Integer userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getStatus()) {
+                Patient patient = new Patient();
+                patient.setPatientName(user.getName());
+                patient.setUser(new User(userId));
+                patient.setStatus(true);
                 return convertEntityToDto(patientRepository.save(patient));
-
-            } else throw new BussinessException("Patient Must not Be Null");
-        } else throw new BussinessException("Deactivated User Unable to Process...");
+            }else throw new BussinessException("Deactivated User Unable to Process...");
+        } else throw new NoSuchElementException("user not found with id "+userId);
     }
 
     /**

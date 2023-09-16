@@ -72,7 +72,7 @@ public class GlobalExcptionController {
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	//@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ErrorResponse handleValidationExceptions(
 			MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();

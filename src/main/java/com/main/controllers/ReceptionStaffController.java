@@ -5,8 +5,10 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.main.ApiResponse;
+import com.main.RequestDto.DoctorDto;
 import com.main.RequestDto.PatientDto;
 import com.main.RequestDto.ReceptionStaffDto;
+import com.main.globalExcp.BussinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -32,8 +34,8 @@ public class ReceptionStaffController {
 	 * @return staff member info
 	 */
 	@GetMapping("/{id}")
-	public ReceptionStaffDto getStaffInfoById(@PathVariable int id){
-		return receptionService.findReceptionInfoWithId(id);
+	public ResponseEntity<ApiResponse<ReceptionStaffDto>> getStaffInfoById(@PathVariable int id){
+		return new ResponseEntity<>(new ApiResponse<>(receptionService.findReceptionInfoWithId(id)),HttpStatus.OK);
 	}
 
 
@@ -42,10 +44,9 @@ public class ReceptionStaffController {
 	 * @return staff members info
 	 */
 	@GetMapping("all")
-	public ApiResponse<List<ReceptionStaffDto>> getStaffInfo(){
-		Map<String, Object> data = new HashMap<>();
-		data.put("Staff", receptionService.findAllStaffInfo());
-		return new ApiResponse<>(HttpStatus.OK,"SUCCESS",data);
+	public ResponseEntity<ApiResponse<List<ReceptionStaffDto>>> getStaffInfo(){
+
+		return new ResponseEntity<>(new ApiResponse<>(receptionService.findAllStaffInfo()),HttpStatus.OK);
 	}
 	/**
 	 * @param offset   page start from 1
@@ -53,24 +54,22 @@ public class ReceptionStaffController {
 	 * @return page of patients
 	 */
 	@GetMapping("/{offset}/{pagesize}")
-	public ApiResponse<ReceptionStaffDto> retriveAllWithPagination(@PathVariable int offset, @PathVariable int pagesize) {
+	public ResponseEntity<ApiResponse<List<ReceptionStaffDto>>> retriveAllWithPagination(@PathVariable int offset, @PathVariable int pagesize) {
 		if (offset < 1 || pagesize < 1) {
 			throw new IllegalArgumentException();
 		}
 		Page<ReceptionStaffDto> allStaffWithPagination = receptionService.findAllStaffWithPagination((offset-1), pagesize);
 		if (offset <= allStaffWithPagination.getTotalPages()) {
-			Map<String, Object> data = new HashMap<>();
-			data.put("Staff", allStaffWithPagination.getContent());
 			Map<String, Object> meta = Map.of("pageNo", offset,
 					"pageSize", allStaffWithPagination.getSize(),
 					"pageCount", allStaffWithPagination.getNumberOfElements(),
 					"recordCount", allStaffWithPagination.getTotalElements(),
 					"noOfPages", allStaffWithPagination.getTotalPages());
 
-			return new ApiResponse<>(HttpStatus.OK, "SUCCESS", data, meta);
+			return new ResponseEntity<>(new ApiResponse<>(allStaffWithPagination.getContent()),HttpStatus.OK);
 
 		} else
-			return new ApiResponse<>(HttpStatus.NO_CONTENT, "Empty page");
+			return new ResponseEntity<>(new ApiResponse<>(null),HttpStatus.NO_CONTENT);
 	}
 
 	/**
@@ -80,7 +79,7 @@ public class ReceptionStaffController {
 	 * @return page of staff
 	 */
 	@GetMapping("/{offset}/{pageSize}/{field}")
-	public ApiResponse<ReceptionStaffDto> retriveAllWithPaginationSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
+	public ResponseEntity<ApiResponse<List<ReceptionStaffDto>>> retriveAllWithPaginationSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
 		if (offset < 1 || pageSize < 1) {
 			throw new IllegalArgumentException();
 		}
@@ -94,19 +93,20 @@ public class ReceptionStaffController {
 					"recordCount", allPatientsWithPagination.getTotalElements(),
 					"noOfPages", allPatientsWithPagination.getTotalPages());
 
-			return new ApiResponse<>(HttpStatus.OK, "SUCCESS", data, meta);
+			return new ResponseEntity<>(new ApiResponse<>(allPatientsWithPagination.getContent()),HttpStatus.OK);
 
 		} else
-			return new ApiResponse<>(HttpStatus.NO_CONTENT, "Empty page");
+			return new ResponseEntity<>(new ApiResponse<>(null),HttpStatus.NO_CONTENT);
 	}
+
 	/**
 	 *
 	 * @param receptionStaffDto object
 	 * @return staff info
 	 */
 	@PostMapping("/signup")
-	public ReceptionStaffDto addReceptionStaff(@RequestBody @Valid ReceptionStaffDto receptionStaffDto) {
-		return receptionService.addStaff(receptionStaffDto);
+	public ResponseEntity<ApiResponse<ReceptionStaffDto>> addReceptionStaff(@RequestBody @Valid ReceptionStaffDto receptionStaffDto) {
+		return new ResponseEntity<>(new ApiResponse<>(receptionService.addStaff(receptionStaffDto)),HttpStatus.NO_CONTENT);
 	}
 
 	/**
@@ -117,9 +117,17 @@ public class ReceptionStaffController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse<Void>> deletePatientWithId(@PathVariable int id){
 		if (receptionService.deleteStaffWithId(id)){
-			return new ResponseEntity<>(new ApiResponse<>(HttpStatus.NO_CONTENT,"Patient Deleted"),HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(new ApiResponse<Void>(),HttpStatus.NO_CONTENT);
 		}
 		else  throw new NoSuchElementException();
+	}
+	@GetMapping("doctors/{type}")
+	public ResponseEntity<ApiResponse<List<DoctorDto>>> getDoctorsByType(@PathVariable String type){
+		List<DoctorDto> doctorsByType = receptionService.getDoctorsByType(type);
+		if (!doctorsByType.isEmpty()){
+			return new ResponseEntity<>(new ApiResponse<>(doctorsByType),HttpStatus.OK);
+		}
+		else throw new BussinessException("Invalid type");
 	}
 
 }

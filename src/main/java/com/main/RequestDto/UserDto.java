@@ -31,8 +31,7 @@ public class UserDto {
 
     private Boolean status;
 
-	public UserDto(Integer userId, String name) {
+	public UserDto(int userId) {
+		this.userId = userId;
 	}
-
-
 }

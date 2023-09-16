@@ -1,38 +1,27 @@
 package com.main;
 
 
+import com.main.RequestDto.PatientDto;
+import liquibase.pro.packaged.C;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApiResponse<T> {
-    private int code;
-    private String status;
-    private String message;
-    private Map<String,Object> data;
+
+    private T data;
     private Map<String,Object> meta;
 
-    public ApiResponse() {
 
-    }
-
-    public ApiResponse(HttpStatus httpStatus, String message) {
-        this();
-        this.code = httpStatus.value();
-        this.status = httpStatus.name();
-        this.message = message;
-    }
-
-
-    public ApiResponse(HttpStatus httpStatus, String message, Map<String,Object> data) {
-        this(httpStatus,message);
+    public ApiResponse(T data) {
         this.data = data;
     }
-    public ApiResponse(HttpStatus status, String message, Map<String, Object> data, Map<String, Object> meta) {
-        this(status,message,data);
-        this.meta = meta;
-    }
-
 }

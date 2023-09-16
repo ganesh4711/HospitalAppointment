@@ -20,7 +20,7 @@ public class Patient {
     private User user;
 
     private String patientName;
-
+   @Column(columnDefinition = "boolean default 'true' ")
     private Boolean status;
     
 	public Patient(Integer patientId) {

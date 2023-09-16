@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+
+    <changeSet id="createTable-appointments" author="ganesh">
+        <createTable tableName="appointments">
+            <column name="appointment_id" type="INT" autoIncrement="true" startWith="101" incrementBy="10">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="doctor_id" type="INT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="patient_id" type="INT">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="reception_staff_id" type="INT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_of_appointment" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="time_of_appointment" type="TIME">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="BIT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="addForeignKeyConstraints-appointments" author="YourAuthor">
+        <addForeignKeyConstraint baseTableName="appointments"
+                                 baseColumnNames="doctor_id"
+                                 constraintName="fk_appointments_doctors"
+                                 referencedTableName="doctors"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="doctor_id"/>
+        <addForeignKeyConstraint baseTableName="appointments"
+                                 baseColumnNames="patient_id"
+                                 constraintName="fk_appointments_patients"
+                                 referencedTableName="patients"
+
+                                 referencedColumnNames="patient_id"/>
+        <addForeignKeyConstraint baseTableName="appointments"
+                                 baseColumnNames="reception_staff_id"
+                                 constraintName="fk_appointments_reception_staff"
+                                 referencedTableName="reception_staff"
+                                 referencedColumnNames="reception_staff_id"
+                               />
+    </changeSet>
+    <changeSet id="addTypeColumn" author="ganesh">
+    <addColumn tableName="appointments" >
+        <column name="type" type="VARCHAR2(50)">
+            <constraints nullable="false"/>
+        </column>
+    </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

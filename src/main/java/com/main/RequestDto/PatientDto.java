@@ -10,10 +10,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class PatientDto {
     private Integer patientId;
-    @NotBlank
-    @NotBlank
+
     private String patientName;
-    @NotNull
+
     private UserDto user;
 
     private Boolean status;

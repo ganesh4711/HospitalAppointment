@@ -5,11 +5,14 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.main.RequestDto.DoctorDto;
 import com.main.RequestDto.PatientDto;
 import com.main.entites.Patient;
 import com.main.entites.User;
 import com.main.globalExcp.BussinessException;
+import com.main.repos.DoctorRepository;
 import com.main.repos.UserRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
@@ -25,22 +28,22 @@ import com.main.entites.ReceptionStaff;
 import com.main.repos.ReceptionStaffRepository;
 
 @Service
+@AllArgsConstructor
 public class ReceptionStaffService {
 
-    @Autowired
-    private ReceptionStaffRepository receptionRepo;
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private ModelMapper modelmapper;
+    private final ReceptionStaffRepository receptionRepo;
+    private final DoctorRepository doctorRepository;
+    private final UserRepository userRepository;
+
+
+    private final ModelMapper modelmapper;
 
     public ReceptionStaffDto convertEntityToDto(ReceptionStaff staff) {
         modelmapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         return modelmapper.map(staff, ReceptionStaffDto.class);
     }
-
-    public ReceptionStaff converDtoToEntity(ReceptionStaffDto receptionStaffDto) {
+     public ReceptionStaff converDtoToEntity(ReceptionStaffDto receptionStaffDto) {
         return modelmapper.map(receptionStaffDto, ReceptionStaff.class);
     }
 
@@ -126,6 +129,9 @@ public class ReceptionStaffService {
 
         return false;
     }
-}
 
+    public List<DoctorDto> getDoctorsByType(String type) {
+        return doctorRepository.findAllByType(type);
+    }
+}
 

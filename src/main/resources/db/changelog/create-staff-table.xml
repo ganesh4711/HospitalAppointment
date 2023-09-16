@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="createTable-reception_staff" author="ganesh">
+        <createTable tableName="reception_staff">
+            <column name="reception_staff_id" type="INT" autoIncrement="true" startWith="300" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="staff_name" type="VARCHAR(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="BIT" >
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addForeignKeyConstraint-reception_staff-users" author="ganesh">
+        <addForeignKeyConstraint baseTableName="reception_staff"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_reception_staff_users"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

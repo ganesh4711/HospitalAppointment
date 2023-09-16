@@ -1,6 +1,7 @@
 package com.main.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -72,13 +73,28 @@ public class AppointmentsService {
 	 * @param pagesize of the page
 	 * @return page
 	 */
-	public Page<AppointmentDto> findAllUserWithPagination(int offSet, int pagesize) {
+	public Page<AppointmentDto> findAllAppointmentsWithPagination(int offSet, int pagesize) {
 		Page<Appointment> appointmentPage = appointRepo.findAll(PageRequest.of(offSet, pagesize));
 		List<AppointmentDto> appointmentDtoList = appointmentPage.getContent().stream()
 				.map(this::convertEntityToDto)
 				.collect(Collectors.toList());
 
 		return new PageImpl<>(appointmentDtoList, appointmentPage.getPageable(), appointmentPage.getTotalElements());
+	}
+	/**
+	 * @param offSet   page
+	 * @param pagesize of the page
+	 * @param field    to be sorted
+	 * @return page
+	 */
+	public Page<AppointmentDto> findAllAppointmentsWithPaginationSorting(int offSet, int pagesize, String field) {
+
+		Page<Appointment> appointmentPage = appointRepo.findAll(PageRequest.of(offSet, pagesize, Sort.by(field)));
+		List<AppointmentDto> userDtoList = appointmentPage.getContent().stream()
+				.map(this::convertEntityToDto)
+				.collect(Collectors.toList());
+
+		return new PageImpl<>(userDtoList, appointmentPage.getPageable(), appointmentPage.getTotalElements());
 	}
 
 	
@@ -95,12 +111,17 @@ public class AppointmentsService {
      
 	public Appointment fixAppointment(Appointment appointment) {
 		if(patientRepo.findById(appointment.getPatient().getPatientId()).isPresent()) {
-			if (doctorRepo.findById(appointment.getDoctor().getDoctorId()).isPresent()) {
-				appointment.setReceptionStaff(new ReceptionStaff(301));    //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-				return appointRepo.save(appointment);
+			Optional<Doctor> byId = doctorRepo.findById(appointment.getDoctor().getDoctorId());
+			if (byId.isPresent()) {
+				if (byId.get().getAvailability()){
+					appointment.setReceptionStaff(new ReceptionStaff(301));    //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+					return appointRepo.save(appointment);
+				}
+				else throw new  BussinessException("Doctor is not available");
+
 			}
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "invalid doctor id");
+			throw new NoSuchElementException("invalid doctor id ");
 		}
-		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "invalid patient id");
+		throw new NoSuchElementException("invalid patient id");
 	}
 }

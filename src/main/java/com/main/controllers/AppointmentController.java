@@ -3,37 +3,37 @@ package com.main.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.main.entites.Appointment;
 import com.main.service.AppointmentsService;
 
+import javax.validation.Valid;
+
 @RestController
+@RequestMapping("/appointments")
 public class AppointmentController {
 
 	@Autowired
 	private AppointmentsService appointService;
 	
-	@GetMapping("/getAppointments") //admin or staff
+	@GetMapping("/all") //admin or staff
 	public List<Appointment> retriveAppointments(){
 		return appointService.getAppointments() ;
 		
 	}
-	@GetMapping("/user/getAppointments") //patient
+	@GetMapping("/user") //patient
 	public List<Appointment> retriveAppointmentsOfUser(){
 		return appointService.getAppointmentsOfUser() ;
 		
 	}
-	@GetMapping("/doctor/getAppointments") //patient
+	@GetMapping("/doctor")  //DOCTOR
 	public List<Appointment> retriveAppointmentsOfDoctor(){
 		return appointService.getAppointmentsOfDoctor() ;
 		
 	}
-	@PostMapping("/staff/fix/appointment")
-	public Appointment addAppointment(@RequestBody Appointment a) {
+	@PostMapping("/schedule")
+	public Appointment addAppointment(@RequestBody @Valid Appointment a) {
 		return appointService.fixAppointment(a);
 	}
 }

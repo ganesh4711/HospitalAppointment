@@ -30,16 +30,17 @@ public class UserController {
      * @return user
      */
     @GetMapping   //user
-    public UserDto getUser() {
-        return userService.getUserDetails();
+    public ResponseEntity<ApiResponse<UserDto>> getUser() {
+        return
+                new ResponseEntity<>(new ApiResponse<>(userService.getUserDetails()),HttpStatus.OK);
     }
 
     /**
      * @return all users
      */
     @GetMapping("/all")   //admin
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers() {
+        return  new ResponseEntity<>(new ApiResponse<>(userService.getAllUsers()),HttpStatus.OK);
     }
 
     /**
@@ -48,25 +49,24 @@ public class UserController {
      * @return page of users
      */
     @GetMapping("/{offset}/{pagesize}")
-    public ApiResponse<UserDto> retriveAllWithPagination(@PathVariable int offset, @PathVariable int pagesize) {
+    public ResponseEntity<ApiResponse<List<UserDto>>> retriveAllWithPagination(@PathVariable int offset, @PathVariable int pagesize) {
         if (offset < 1 || pagesize < 1) {
             throw new IllegalArgumentException();
         }
 
         Page<UserDto> allUserWithPagination = userService.findAllUserWithPagination((offset - 1), pagesize);
         if (offset <= allUserWithPagination.getTotalPages()) {
-            Map<String, Object> data = new HashMap<>();
-            data.put("user", allUserWithPagination.getContent());
+
             Map<String, Object> meta = Map.of("pageNo", offset,
                     "pageSize", allUserWithPagination.getSize(),
                     "pageCount", allUserWithPagination.getNumberOfElements(),
                     "recordCount", allUserWithPagination.getTotalElements(),
                     "noOfPages", allUserWithPagination.getTotalPages());
 
-            return new ApiResponse<>(HttpStatus.OK, "SUCCESS", data, meta);
+            return  new ResponseEntity<>(new ApiResponse<>(allUserWithPagination.getContent()),HttpStatus.OK);
 
         } else
-            return new ApiResponse<>(HttpStatus.NO_CONTENT, "Empty page");
+            return new ResponseEntity<>(new ApiResponse<>(null),HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -76,7 +76,7 @@ public class UserController {
      * @return page of users
      */
     @GetMapping("/{offset}/{pagesize}/{field}")
-    public ApiResponse<UserDto> retriveAllWithPaginationSorting(@PathVariable int offset, @PathVariable int pagesize, @PathVariable String field) {
+    public ResponseEntity<ApiResponse<List<UserDto>>> retriveAllWithPaginationSorting(@PathVariable int offset, @PathVariable int pagesize, @PathVariable String field) {
 
         if (offset < 1 || pagesize < 1) {
             throw new IllegalArgumentException();
@@ -84,18 +84,16 @@ public class UserController {
 
         Page<UserDto> allUserWithPagination = userService.findAllUserWithPaginationSorting((offset - 1), pagesize, field);
         if (offset <= allUserWithPagination.getTotalPages()) {
-            Map<String, Object> data = new HashMap<>();
-            data.put("user", allUserWithPagination.getContent());
             Map<String, Object> meta = Map.of("pageNo", offset,
                     "pageSize", allUserWithPagination.getSize(),
                     "pageCount", allUserWithPagination.getNumberOfElements(),
                     "recordCount", allUserWithPagination.getTotalElements(),
                     "noOfPages", allUserWithPagination.getTotalPages());
 
-            return new ApiResponse<>(HttpStatus.OK, "SUCCESS", data, meta);
+             return  new ResponseEntity<>(new ApiResponse<>(allUserWithPagination.getContent()),HttpStatus.OK);
 
         } else
-            return new ApiResponse<>(HttpStatus.NO_CONTENT, "Empty page");
+            return new ResponseEntity<>(new ApiResponse<>(null),HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -103,12 +101,11 @@ public class UserController {
      * @return user info
      */
     @GetMapping("/{userId}") //admin
-    public ApiResponse<UserDto> getUserById(@PathVariable String userId) {
+    public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable String userId) {
 
         Integer userIdValue = Integer.parseInt(userId);
-        Map<String, Object> data = new HashMap<>();
-        data.put("user", userService.getUserById(userIdValue));
-        return new ApiResponse<>(HttpStatus.OK, "SUCCESS", data);
+
+        return new ResponseEntity<>(new ApiResponse<>(userService.getUserById(userIdValue)),HttpStatus.OK);
 
     }
 
@@ -117,13 +114,9 @@ public class UserController {
      * @return user info
      */
     @PostMapping("/signup")
-    public ApiResponse<UserDto> createUser(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<ApiResponse<UserDto>> createUser(@Valid @RequestBody UserDto userDto) {
 
-        UserDto createdUser = userService.createUser(userDto);
-        Map<String, Object> data = new HashMap<>();
-        data.put("user", createdUser);
-
-        return new ApiResponse<>(HttpStatus.CREATED, "CREATED", data);
+        return new ResponseEntity<>(new ApiResponse<>(userService.createUser(userDto)),HttpStatus.CREATED);
 
 
     }
@@ -146,7 +139,7 @@ public class UserController {
      * @return user status
      */
     @DeleteMapping            //user can delete his details
-    public ResponseEntity<Void> deactivateUserr() {
+    public ResponseEntity<Void> deactivateUser() {
 
         boolean deactivated = userService.deactivateUser(); // here u_id take from authentication
         if (deactivated) {

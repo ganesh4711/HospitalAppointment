@@ -4,6 +4,7 @@ import com.main.ApiResponse;
 import com.main.RequestDto.PatientDto;
 import com.main.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,8 @@ public class PatientController {
      * @return patient info
      */
     @GetMapping
-    public ApiResponse<PatientDto> retrivePatientDetails() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("Details", patientService.getPatientDetails());
-        return new ApiResponse<>(HttpStatus.OK, "success", data);
+    public ResponseEntity<ApiResponse<PatientDto>> retrivePatientDetails() {
+        return new ResponseEntity<>(new ApiResponse<>(patientService.getPatientDetails()),HttpStatus.OK);
     }
 
     /**
@@ -36,11 +35,9 @@ public class PatientController {
      * @return group of patients
      */
     @GetMapping("/all")
-    public ApiResponse<List<PatientDto>> getAllPatients() {
-        Object patientList = patientService.getAllPatient();
-        Map<String, Object> data = new HashMap<>();
-        data.put("patients", patientList);
-        return new ApiResponse<>(HttpStatus.OK, "sucess", data);
+    public ResponseEntity<ApiResponse<List<PatientDto>>> getAllPatients() {
+
+        return new ResponseEntity<>(new ApiResponse<>(patientService.getAllPatient()),HttpStatus.OK);
     }
 
     /**
@@ -49,7 +46,7 @@ public class PatientController {
      * @return page of patients
      */
     @GetMapping("/{offset}/{pagesize}")
-    public ApiResponse<PatientDto> retriveAllWithPagination(@PathVariable int offset, @PathVariable int pagesize) {
+    public ResponseEntity<ApiResponse<List<PatientDto>>> retriveAllWithPagination(@PathVariable int offset, @PathVariable int pagesize) {
         if (offset < 1 || pagesize < 1) {
             throw new IllegalArgumentException();
         }
@@ -63,10 +60,11 @@ public class PatientController {
                     "recordCount", allPatientsWithPagination.getTotalElements(),
                     "noOfPages", allPatientsWithPagination.getTotalPages());
 
-            return new ApiResponse<>(HttpStatus.OK, "SUCCESS", data, meta);
+
+            return new ResponseEntity<>(new ApiResponse<>(allPatientsWithPagination.getContent(), meta),HttpStatus.OK);
 
         } else
-            return new ApiResponse<>(HttpStatus.NO_CONTENT, "Empty page");
+            return new ResponseEntity<>(new ApiResponse<>(null),HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -76,7 +74,7 @@ public class PatientController {
      * @return page of patients
      */
     @GetMapping("/{offset}/{pageSize}/{field}")
-    public ApiResponse<PatientDto> retriveAllWithPaginationSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
+    public ResponseEntity<ApiResponse<List<PatientDto>>> retriveAllWithPaginationSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
         if (offset < 1 || pageSize < 1) {
             throw new IllegalArgumentException();
         }
@@ -90,22 +88,22 @@ public class PatientController {
                     "recordCount", allPatientsWithPagination.getTotalElements(),
                     "noOfPages", allPatientsWithPagination.getTotalPages());
 
-            return new ApiResponse<>(HttpStatus.OK, "SUCCESS", data, meta);
+            return new ResponseEntity<>(new ApiResponse<>(allPatientsWithPagination.getContent(), meta),HttpStatus.OK);
 
         } else
-            return new ApiResponse<>(HttpStatus.NO_CONTENT, "Empty page");
+            return new ResponseEntity<>(new ApiResponse<>(null),HttpStatus.NO_CONTENT);
     }
 
 
 
     /**
      *
-     * @param patientDto object
+     * @param userId object
      * @return patient info
      */
     @PostMapping("/signup")
-    public PatientDto addPatient(@RequestBody @Valid PatientDto patientDto) {
-        return patientService.addPatient(patientDto);
+    public ResponseEntity<ApiResponse<PatientDto>> addPatient(@PathVariable Integer userId) {
+        return new ResponseEntity<>(new ApiResponse<>(patientService.addPatient(userId)),HttpStatus.CREATED);
     }
 
     /**
@@ -113,15 +111,15 @@ public class PatientController {
      * @return patient status
      */
     @DeleteMapping  //user
-    public ApiResponse<Void> patientDeleted() {
+    public ResponseEntity<ApiResponse<Void>> patientDeleted() {
         if (patientService.deletePatient()) {
-            return new ApiResponse<>(HttpStatus.NO_CONTENT, "Deleted");
-        } else return new ApiResponse<>(HttpStatus.NOT_FOUND, "Patient is not found");
+            return new ResponseEntity<>(new ApiResponse<Void>(),HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(new ApiResponse<>(),HttpStatus.NOT_FOUND);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deletePatientWithId(@PathVariable int id){
-        if (patientService.deletePatientWithId(id)){
-            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.NO_CONTENT,"Patient Deleted"),HttpStatus.NO_CONTENT);
+        if (patientService.deletePatientWithId(id)) {
+            return new ResponseEntity<>(new ApiResponse<Void>(),HttpStatus.NO_CONTENT);
         }
         else  throw new NoSuchElementException();
     }
