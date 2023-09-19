@@ -1,5 +1,8 @@
 package com.main.entites;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class ReceptionStaff {
 
     @Id
@@ -20,36 +25,9 @@ public class ReceptionStaff {
 
     private String staffName;
     private Boolean status;
-    
-	public ReceptionStaff() {
-		super();
-	}
+
 	public ReceptionStaff(int staffId) {
 		this.receptionStaffId=staffId;
-	}
-	public Integer getReceptionStaffId() {
-		return receptionStaffId;
-	}
-	public void setReceptionStaffId(Integer receptionStaffId) {
-		this.receptionStaffId = receptionStaffId;
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public String getStaffName() {
-		return staffName;
-	}
-	public void setStaffName(String staffName) {
-		this.staffName = staffName;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
 	}
 
     

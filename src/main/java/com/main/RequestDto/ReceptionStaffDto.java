@@ -20,6 +20,4 @@ public class ReceptionStaffDto {
 		this.receptionStaffId=staffId;
 	}
 
-
-    
 }

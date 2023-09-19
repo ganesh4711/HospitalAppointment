@@ -12,6 +12,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "doctors")
+@Data
 public class Doctor {
 
     @Id
@@ -34,43 +35,6 @@ public class Doctor {
 	public Doctor(Integer doctorId) {
 		super();
 		this.doctorId = doctorId;
-	}
-
-	public Integer getDoctorId() {
-		return doctorId;
-	}
-	public void setDoctorId(Integer doctorId) {
-		this.doctorId = doctorId;
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public String getDoctorName() {
-		return doctorName;
-	}
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public Boolean getAvailability() {
-		return availability;
-	}
-	public void setAvailability(Boolean availability) {
-		this.availability = availability;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
 	}
 
 }
