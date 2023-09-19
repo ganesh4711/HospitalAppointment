@@ -1,6 +1,8 @@
 package com.main.RequestDto;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -28,12 +31,14 @@ public class AppointmentDto {
 
    @NotNull
     private PatientDto patient;
+   @NotBlank
+   private String type;
 	@NotNull
     private ReceptionStaffDto receptionStaff;
 	@NotNull
-    private Date dateOfAppointment;
+    private LocalDate dateOfAppointment;
 	@NotNull
-    private Time timeOfAppointment;
+    private LocalTime timeOfAppointment;
     private Boolean status;
 	
 }

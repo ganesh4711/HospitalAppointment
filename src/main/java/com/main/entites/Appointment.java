@@ -1,6 +1,8 @@
 package com.main.entites;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -15,6 +17,7 @@ import lombok.Data;
 
 @Entity
 @Table(name="appointments")
+@Data
 public class Appointment {
 
     @Id
@@ -32,54 +35,12 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "reception_staff_id")
     private ReceptionStaff receptionStaff;
+	private String type;
 
-    private Date dateOfAppointment;
-    private Time timeOfAppointment;
+    private LocalDate dateOfAppointment;
+    private LocalTime timeOfAppointment;
     private Boolean status;
  // Getter and setter methods
-    
-	public Integer getAppointmentId() {
-		return appointmentId;
-	}
-	public void setAppointmentId(Integer appointmentId) {
-		this.appointmentId = appointmentId;
-	}
-	public Doctor getDoctor() {
-		return doctor;
-	}
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
-	}
-	public Patient getPatient() {
-		return patient;
-	}
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-	public ReceptionStaff getReceptionStaff() {
-		return receptionStaff;
-	}
-	public void setReceptionStaff(ReceptionStaff receptionStaff) {
-		this.receptionStaff = receptionStaff;
-	}
-	public Date getDateOfAppointment() {
-		return dateOfAppointment;
-	}
-	public void setDateOfAppointment(Date dateOfAppointment) {
-		this.dateOfAppointment = dateOfAppointment;
-	}
-	public Time getTimeOfAppointment() {
-		return timeOfAppointment;
-	}
-	public void setTimeOfAppointment(Time timeOfAppointment) {
-		this.timeOfAppointment = timeOfAppointment;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
 
     
 }

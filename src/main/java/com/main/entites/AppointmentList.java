@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -13,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "appointmentsList")
+@Table(name = "appointmentslist")
 public class AppointmentList {
 
     @Id
@@ -37,7 +38,7 @@ public class AppointmentList {
     private ReceptionStaff receptionStaff;
 
     @Column(name = "date_of_appointment", nullable = false)
-    private Date dateOfAppointment;
+    private LocalDate dateOfAppointment;
 
     @Column(name = "time_of_appointment", nullable = false)
     private LocalTime timeOfAppointment;

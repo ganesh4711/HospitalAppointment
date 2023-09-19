@@ -33,7 +33,12 @@
             </column>
         </createTable>
     </changeSet>
-
+<changeSet id="addTypeAppointment" author="ganesh">
+    <addColumn tableName="appointments">
+        <column name="type" type="varchar(50)" >
+        </column>
+    </addColumn>
+</changeSet>
 
     <changeSet id="addForeignKeyConstraints-appointmentsList" author="GANESH">
         <addForeignKeyConstraint baseTableName="appointmentsList"

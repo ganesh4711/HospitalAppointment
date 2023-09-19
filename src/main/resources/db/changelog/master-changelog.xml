@@ -1,17 +1,10 @@
-<<<<<<< Updated upstream
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <include file="classpath:db/changelog/create-users-table.xml" relativeToChangelogFile="false" />
 
-    <include file="classpath:db/changelog/create-patient-table.xml" relativeToChangelogFile="false" />
-
-=======
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
 <!--    <include file="create-hospitals-tables.xml" relativeToChangelogFile="true" />-->
->>>>>>> Stashed changes
 
 <!--    <include file="create-users-table.xml" relativeToChangelogFile="true" />-->
 <!--    <include file="create-patient-table.xml" relativeToChangelogFile="true" />-->

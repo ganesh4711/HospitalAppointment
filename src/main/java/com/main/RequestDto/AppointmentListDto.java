@@ -1,4 +1,5 @@
 package com.main.RequestDto;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,31 +8,33 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor@NoArgsConstructor
-public class AppointmentListDto
-{
+@AllArgsConstructor
+@NoArgsConstructor
+public class AppointmentListDto {
 
-    private Long id;
-    @NotBlank(message = "doctor id cannot be blank")
+    private Integer id;
+    @NotNull(message = "doctor id cannot be null")
     private Integer doctorId;
-    @NotBlank(message = "patient id cannot be blank")
-    private Integer  patientId;
-    @NotNull(message = "type not be null")
+    @NotNull(message = "patient id cannot be null")
+    private Integer patientId;
+    @NotBlank(message = "type not be null")
     private String type;
-    @NotBlank(message = "staff id cannot be blank")
-    private Long receptionStaffId;
+    @NotNull(message = "staff id cannot be null")
+    private Integer receptionStaffId;
 
     @NotNull(message = "Date not be null")
-    @DateTimeFormat(pattern =  "MM/dd/yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate dateOfAppointment;
     @NotNull(message = "Date not be null")
-    @DateTimeFormat(pattern =  "HH:mm")
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime timeOfAppointment;
+    @Pattern(regexp = "^(true|false)$", message = "status must be true or false")
     private Boolean status;
 
 
