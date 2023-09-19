@@ -1,17 +1,19 @@
 package com.main.service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.main.RequestDto.AppointmentListDto;
 import com.main.RequestDto.DoctorDto;
 import com.main.RequestDto.PatientDto;
-import com.main.entites.Patient;
-import com.main.entites.User;
+import com.main.entites.*;
 import com.main.globalExcp.BussinessException;
-import com.main.repos.DoctorRepository;
-import com.main.repos.UserRepository;
+import com.main.repos.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -24,8 +26,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.main.RequestDto.ReceptionStaffDto;
-import com.main.entites.ReceptionStaff;
-import com.main.repos.ReceptionStaffRepository;
 
 @Service
 @AllArgsConstructor
@@ -35,6 +35,7 @@ public class ReceptionStaffService {
     private final ReceptionStaffRepository receptionRepo;
     private final DoctorRepository doctorRepository;
     private final UserRepository userRepository;
+
 
 
     private final ModelMapper modelmapper;
@@ -133,5 +134,7 @@ public class ReceptionStaffService {
     public List<DoctorDto> getDoctorsByType(String type) {
         return doctorRepository.findAllByType(type);
     }
+
+
 }
 
