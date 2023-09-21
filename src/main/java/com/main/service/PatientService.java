@@ -5,7 +5,7 @@ import com.main.RequestDto.PatientDto;
 import com.main.entites.Patient;
 
 import com.main.entites.User;
-import com.main.globalExcp.BussinessException;
+import com.main.customExceptions.BussinessException;
 import com.main.repos.PatientRepository;
 import com.main.repos.UserRepository;
 import org.modelmapper.ModelMapper;

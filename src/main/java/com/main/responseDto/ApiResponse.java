@@ -1,4 +1,4 @@
-package com.main;
+package com.main.responseDto;
 
 
 import com.main.RequestDto.PatientDto;

@@ -1,12 +1,14 @@
-package com.main.globalExcp;
+package com.main.responseDto;
 
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 @AllArgsConstructor(staticName = "build")
+@Data
 public class ErrorResponse {
 	// customizing timestamp serialization format
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
@@ -60,52 +62,5 @@ public class ErrorResponse {
 		this.message=message;
     }
 
-    public Date getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public int getCode() {
-		return code;
-	}
-
-	public void setCode(int code) {
-		this.code = code;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getStackTrace() {
-		return stackTrace;
-	}
-
-	public void setStackTrace(String stackTrace) {
-		this.stackTrace = stackTrace;
-	}
-
-	public Object getData() {
-		return data;
-	}
-
-	public void setData(Object data) {
-		this.data = data;
-	}
 	
 }

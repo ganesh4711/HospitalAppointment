@@ -1,4 +1,4 @@
-package com.main.globalExcp;
+package com.main.customExceptions;
 
 import org.springframework.http.HttpStatus;
 

@@ -1,16 +1,14 @@
 package com.main.controllers;
 
-import com.main.ApiResponse;
 import com.main.RequestDto.PatientDto;
+import com.main.responseDto.ApiResponse;
 import com.main.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

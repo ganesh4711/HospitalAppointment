@@ -5,7 +5,7 @@ import com.main.entites.Appointment;
 import com.main.entites.AppointmentList;
 import com.main.entites.Doctor;
 import com.main.entites.Patient;
-import com.main.globalExcp.BussinessException;
+import com.main.customExceptions.BussinessException;
 import com.main.repos.AppointmentListRepo;
 import com.main.repos.AppointmentRepository;
 import com.main.repos.DoctorRepository;
@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -41,6 +43,7 @@ public class AppointmentListService {
                 .map(this::convertEntityToDto)
                 .toList();
     }
+
     public List<AppointmentListDto> getAllByDoctor(Integer doctorId){
         List<AppointmentList> allByDoctorDoctorId = appointmentListRepo.findAllByDoctor_DoctorId(doctorId);
         return allByDoctorDoctorId.stream()
@@ -119,5 +122,12 @@ public class AppointmentListService {
        AppointmentList appointmentList=optionalAppointmentList.get();
         appointmentList.setStatus(false);
         appointmentListRepo.save(appointmentList);
+    }
+    public List<AppointmentListDto> getAllAppointmentListToday(){
+        List<AppointmentList> todayAppointmentRequests = appointmentListRepo.getTodayAppointmentRequest(LocalDate.now());
+        return  todayAppointmentRequests.stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+
     }
 }

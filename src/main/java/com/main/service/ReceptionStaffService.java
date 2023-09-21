@@ -12,7 +12,7 @@ import com.main.RequestDto.AppointmentListDto;
 import com.main.RequestDto.DoctorDto;
 import com.main.RequestDto.PatientDto;
 import com.main.entites.*;
-import com.main.globalExcp.BussinessException;
+import com.main.customExceptions.BussinessException;
 import com.main.repos.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

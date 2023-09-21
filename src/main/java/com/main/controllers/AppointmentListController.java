@@ -1,8 +1,7 @@
 package com.main.controllers;
 
-import com.main.ApiResponse;
 import com.main.RequestDto.AppointmentListDto;
-import com.main.entites.AppointmentList;
+import com.main.responseDto.ApiResponse;
 import com.main.service.AppointmentListService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,6 +39,10 @@ public class AppointmentListController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deactivateAppointmentList(@PathVariable int id){
         return  new ResponseEntity<>(new ApiResponse<>(),HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/today")
+    public ResponseEntity<ApiResponse<List<AppointmentListDto>>> appointmentsToday(){
+        return new ResponseEntity<>(new ApiResponse<>(appointmentListService.getAllAppointmentListToday()),HttpStatus.OK);
     }
 
 }

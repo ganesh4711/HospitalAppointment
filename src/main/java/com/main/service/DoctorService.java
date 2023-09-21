@@ -1,12 +1,10 @@
 package com.main.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.main.entites.Patient;
+import com.main.RequestDto.DoctorDto;
+import com.main.entites.Doctor;
 import com.main.entites.User;
-import com.main.globalExcp.BussinessException;
+import com.main.customExceptions.BussinessException;
+import com.main.repos.DoctorRepository;
 import com.main.repos.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -17,9 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.main.RequestDto.DoctorDto;
-import com.main.entites.Doctor;
-import com.main.repos.DoctorRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorService {
