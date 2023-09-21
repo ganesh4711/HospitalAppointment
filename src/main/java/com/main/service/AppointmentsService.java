@@ -113,12 +113,9 @@ public class AppointmentsService {
 		if(patientRepo.findById(appointment.getPatient().getPatientId()).isPresent()) {
 			Optional<Doctor> byId = doctorRepo.findById(appointment.getDoctor().getDoctorId());
 			if (byId.isPresent()) {
-				if (byId.get().getAvailability()){
+
 					appointment.setReceptionStaff(new ReceptionStaff(301));    //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
 					return appointRepo.save(appointment);
-				}
-				else throw new  BussinessException("Doctor is not available");
-
 			}
 			throw new NoSuchElementException("invalid doctor id ");
 		}

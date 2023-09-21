@@ -12,7 +12,7 @@
                 <constraints unique="true" />
             </column>
             <column name="patient_name" type="VARCHAR(50)"/>
-            <column name="status" type="BIT" >
+            <column name="status" type="BOOLEAN" >
             </column>
         </createTable>
 

@@ -4,21 +4,21 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-<!--    <include file="create-hospitals-tables.xml" relativeToChangelogFile="true" />-->
+    <include file="create-hospitals-tables.xml" relativeToChangelogFile="true" />
 
-<!--    <include file="create-users-table.xml" relativeToChangelogFile="true" />-->
-<!--    <include file="create-patient-table.xml" relativeToChangelogFile="true" />-->
-<!--    <include file="create-admins-table.xml" relativeToChangelogFile="true" />-->
-<!--    <include file="create-doctors-table.xml" relativeToChangelogFile="true" />-->
-<!--    <include file="create-staff-table.xml" relativeToChangelogFile="true" />-->
+    <include file="create-users-table.xml" relativeToChangelogFile="true" />
+    <include file="create-patient-table.xml" relativeToChangelogFile="true" />
+    <include file="create-admins-table.xml" relativeToChangelogFile="true" />
+    <include file="create-doctors-table.xml" relativeToChangelogFile="true" />
+    <include file="create-staff-table.xml" relativeToChangelogFile="true" />
 
-<!--    <include file="create-roles-table.xml" relativeToChangelogFile="true" />-->
-<!--    <include file="create-userrole-table.xml" relativeToChangelogFile="true" />-->
-
-<!--    <include file="create-appointments-table.xml" relativeToChangelogFile="true" />-->
+    <include file="create-roles-table.xml" relativeToChangelogFile="true" />
+    <include file="create-userrole-table.xml" relativeToChangelogFile="true" />
     <include file="create-appointmentList-table.xml" relativeToChangelogFile="true" />
+    <include file="create-appointments-table.xml" relativeToChangelogFile="true" />
 
 
 
-<!--    <include file="create-log-table.xml" relativeToChangelogFile="true" />-->
+
+    <include file="create-log-table.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

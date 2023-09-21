@@ -18,7 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class AppointmentListDto {
 
-    private Integer id;
+    private Integer appointmentId;
     @NotNull(message = "doctor id cannot be null")
     private Integer doctorId;
     @NotNull(message = "patient id cannot be null")
@@ -34,7 +34,7 @@ public class AppointmentListDto {
     @NotNull(message = "Date not be null")
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime timeOfAppointment;
-    @Pattern(regexp = "^(true|false)$", message = "status must be true or false")
+
     private Boolean status;
 
 

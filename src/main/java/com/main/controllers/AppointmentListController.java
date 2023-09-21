@@ -33,7 +33,7 @@ public class AppointmentListController {
     public ResponseEntity<ApiResponse<AppointmentListDto>> addAppointmentList(@Valid @RequestBody AppointmentListDto appointmentListDto){
         return new ResponseEntity<>(new ApiResponse<>(appointmentListService.appointmentRequest(appointmentListDto)),HttpStatus.CREATED);
     }
-    @PutMapping("/update/{id}")
+    @PatchMapping("/update/{id}")
     public ResponseEntity<ApiResponse<AppointmentListDto>> updatedAppointmentList(@RequestBody AppointmentListDto appointmentListDto,@PathVariable Integer id){
         return new ResponseEntity<>(new ApiResponse<>(appointmentListService.approveAppointment(id,appointmentListDto)),HttpStatus.ACCEPTED);
     }

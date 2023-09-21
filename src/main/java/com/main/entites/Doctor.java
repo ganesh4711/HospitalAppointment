@@ -25,7 +25,6 @@ public class Doctor {
 
     private String doctorName;
     private String type;
-    private Boolean availability;
     private Boolean status;
     
 	public Doctor() {

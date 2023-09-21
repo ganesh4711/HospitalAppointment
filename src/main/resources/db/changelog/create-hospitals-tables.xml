@@ -15,7 +15,7 @@
             <column name="address" type="VARCHAR(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="[since]" type="DATE">
+            <column name="since" type="DATE">
                 <constraints nullable="true"/>
             </column>
         </createTable>

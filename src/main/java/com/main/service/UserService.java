@@ -42,7 +42,7 @@ public class UserService {
      * @return user info
      */
     public UserDto getUserDetails() {
-        int userId = 24;     //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
+        int userId = 20;     //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
         User user = userRepository.findById(userId).get();
 
         return convertEntityToDto(user);
@@ -127,14 +127,15 @@ public class UserService {
     public boolean deactivateUser() {                          //for user
         int userId = 20; //authenticated user
         User user = userRepository.findById(userId).get();
-        if (user != null) {
+        if (user.getStatus()) {
             user.setStatus(false); // Set status to 0 (deactivated)
             userRepository.save(user);
-            logService.logUserDelete(userId);
+           // logService.logUserDelete(userId);
             return true;
         } else {
-            return false;
+            throw new BussinessException("not a valid user");
         }
+
     }
 
     /**

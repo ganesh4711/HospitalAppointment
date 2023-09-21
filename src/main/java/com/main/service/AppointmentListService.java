@@ -48,7 +48,7 @@ public class AppointmentListService {
                 .toList();
     }
     public AppointmentListDto appointmentRequest(AppointmentListDto appointmentListDto) {
-        System.out.println(appointmentListDto.getDateOfAppointment());
+
         if (appointmentListDto == null) {
             throw new IllegalArgumentException("Appointment data cannot be null");
         }
@@ -67,7 +67,7 @@ public class AppointmentListService {
         }
 
         Optional<Patient> patientOptional = patientRepository.findById(appointmentListDto.getPatientId());
-        if (!patientOptional.isPresent() || !patientOptional.get().getStatus()) {
+        if (patientOptional.isEmpty() || !patientOptional.get().getStatus()) {
             throw new BussinessException("Invalid Patient");
         }
 
@@ -75,11 +75,11 @@ public class AppointmentListService {
         if (doctorOptional.isEmpty() || !doctorOptional.get().getStatus() || !doctorOptional.get().getType().equals(appointmentListDto.getType())) {
             throw new BussinessException("Invalid Doctor");
         }
-
+        appointmentListDto.setStatus(null);
         AppointmentList appointmentList = appointmentListRepo.save(convertDtoToEntity(appointmentListDto));
         return convertEntityToDto(appointmentList);
     }
-
+    //partial update for date time and status
     public AppointmentListDto approveAppointment(Integer id,AppointmentListDto appointmentListDto){
         Optional<AppointmentList> optionalAppointmentList = appointmentListRepo.findById(id);
         if (optionalAppointmentList.isEmpty()){
@@ -87,23 +87,29 @@ public class AppointmentListService {
         }
         AppointmentList appointmentList=optionalAppointmentList.get();
 
-        if (!appointmentList.getStatus().equals(appointmentListDto.getStatus()) && !appointmentListDto.getStatus()){
+        if (!appointmentListDto.getStatus()){
             appointmentList.setStatus(false);
             return convertEntityToDto(appointmentListRepo.save(appointmentList));
         }
-        if (appointmentListDto.getStatus()) {
+       else  {
+
+
+            //approved appointment saving in appointments
             appointmentList.setDateOfAppointment(appointmentListDto.getDateOfAppointment());
             appointmentList.setTimeOfAppointment(appointmentListDto.getTimeOfAppointment());
             appointmentList.setStatus(true);
 
             Appointment appointment = modelMapper.map(appointmentList, Appointment.class);
-            appointment.setAppointmentId(appointmentList.getId());
+            appointment.setAppointmentId(id);
 
             // Save the new Appointment entity
             appointmentRepo.save(appointment);
+            //saving status true
+            AppointmentList save = appointmentListRepo.save(appointmentList);
+            return convertEntityToDto(save);
         }
 
-        return convertEntityToDto(appointmentListRepo.save(appointmentList));
+
     }
     public void deleteEmployee(int id){
         Optional<AppointmentList> optionalAppointmentList = appointmentListRepo.findById(id);

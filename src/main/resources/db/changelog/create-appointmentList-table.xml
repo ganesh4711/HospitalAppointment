@@ -6,7 +6,7 @@
 
 
     <changeSet id="createTable-appointmentsList" author="ganesh">
-        <createTable tableName="appointmentsList">
+        <createTable tableName="appointmentslist">
             <column name="id" type="INT" autoIncrement="true" startWith="202301" incrementBy="1">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -28,32 +28,27 @@
             <column name="time_of_appointment" type="TIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="BIT">
+            <column name="status" type="BOOLEAN">
                 <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
-<changeSet id="addTypeAppointment" author="ganesh">
-    <addColumn tableName="appointments">
-        <column name="type" type="varchar(50)" >
-        </column>
-    </addColumn>
-</changeSet>
+
 
     <changeSet id="addForeignKeyConstraints-appointmentsList" author="GANESH">
-        <addForeignKeyConstraint baseTableName="appointmentsList"
+        <addForeignKeyConstraint baseTableName="appointmentslist"
                                  baseColumnNames="doctor_id"
                                  constraintName="fk_appointmentsList_doctors"
                                  referencedTableName="doctors"
                                  onDelete="CASCADE"
                                  referencedColumnNames="doctor_id"/>
-        <addForeignKeyConstraint baseTableName="appointmentsList"
+        <addForeignKeyConstraint baseTableName="appointmentslist"
                                  baseColumnNames="patient_id"
                                  constraintName="fk_appointmentsList_patients"
                                  referencedTableName="patients"
                                  referencedColumnNames="patient_id"
                                     />
-        <addForeignKeyConstraint baseTableName="appointmentsList"
+        <addForeignKeyConstraint baseTableName="appointmentslist"
                                  baseColumnNames="reception_staff_id"
                                  constraintName="fk_appointmentsList_reception_staff"
                                  referencedTableName="reception_staff"
@@ -61,7 +56,8 @@
 
     </changeSet>
     <changeSet id="addConstraintToDateTime" author="ganesh">
-        <addUniqueConstraint tableName="appointmentsList" columnNames="date_of_appointment , time_of_appointment"/>
+        <addUniqueConstraint tableName="appointmentslist" columnNames="date_of_appointment , time_of_appointment"/>
     </changeSet>
+
 
 </databaseChangeLog>

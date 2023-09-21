@@ -14,7 +14,7 @@
                 <constraints unique="true"/>
             </column>
             <column name="password" type="VARCHAR(30)"/>
-            <column name="status" type="BIT"/>
+            <column name="status" type="BOOLEAN"/>
         </createTable>
     </changeSet>
 

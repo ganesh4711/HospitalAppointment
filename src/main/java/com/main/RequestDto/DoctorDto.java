@@ -8,8 +8,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DoctorDto {
 
 
@@ -20,53 +25,13 @@ public class DoctorDto {
 
     private String doctorName;
     private String type;
-    private Boolean availability;
+
     private Boolean status;
-    
-	public DoctorDto() {
-		super();
-	}
 	
 	public DoctorDto(Integer doctorId) {
 		super();
 		this.doctorId = doctorId;
 	}
 
-	public Integer getDoctorId() {
-		return doctorId;
-	}
-	public void setDoctorId(Integer doctorId) {
-		this.doctorId = doctorId;
-	}
-	public UserDto getUser() {
-		return user;
-	}
-	public void setUser(UserDto user) {
-		this.user = user;
-	}
-	public String getDoctorName() {
-		return doctorName;
-	}
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public Boolean getAvailability() {
-		return availability;
-	}
-	public void setAvailability(Boolean availability) {
-		this.availability = availability;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
 
 }

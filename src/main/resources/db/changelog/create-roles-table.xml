@@ -12,7 +12,7 @@
             <column name="role_name" type="VARCHAR(50)">
                 <constraints nullable="true"/>
             </column>
-            <column name="status" type="BIT">
+            <column name="status" type="BOOLEAN">
                 <constraints nullable="true"/>
             </column>
         </createTable>

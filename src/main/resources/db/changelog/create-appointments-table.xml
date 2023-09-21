@@ -7,7 +7,7 @@
 
     <changeSet id="createTable-appointments" author="ganesh">
         <createTable tableName="appointments">
-            <column name="appointment_id" type="INT" autoIncrement="true" startWith="101" incrementBy="10">
+            <column name="appointment_id" type="INT" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="doctor_id" type="INT">
@@ -23,10 +23,13 @@
             <column name="date_of_appointment" type="DATE">
                 <constraints nullable="true"/>
             </column>
+            <column name="type" type="varchar2(50)">
+                <constraints nullable="false" />
+            </column>
             <column name="time_of_appointment" type="TIME">
                 <constraints nullable="true"/>
             </column>
-            <column name="status" type="BIT">
+            <column name="status" type="BOOLEAN">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -34,6 +37,13 @@
 
 
     <changeSet id="addForeignKeyConstraints-appointments" author="YourAuthor">
+        <addForeignKeyConstraint baseTableName="appointments"
+                                 baseColumnNames="appointment_id"
+                                 constraintName="fk_appointments_appointmentList"
+                                 referencedTableName="appointmentslist"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="id"/>
+
         <addForeignKeyConstraint baseTableName="appointments"
                                  baseColumnNames="doctor_id"
                                  constraintName="fk_appointments_doctors"
@@ -53,12 +63,6 @@
                                  referencedColumnNames="reception_staff_id"
                                />
     </changeSet>
-    <changeSet id="addTypeColumn" author="ganesh">
-    <addColumn tableName="appointments" >
-        <column name="type" type="VARCHAR2(50)">
-            <constraints nullable="false"/>
-        </column>
-    </addColumn>
-    </changeSet>
+
 
 </databaseChangeLog>
