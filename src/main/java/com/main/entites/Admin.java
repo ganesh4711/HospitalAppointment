@@ -1,16 +1,10 @@
 package com.main.entites;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Entity
 @Table(name="admins")
@@ -23,8 +17,10 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer adminId;
 
+    @Column(name="user_id")
+    private Integer userId;
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userId", unique = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "userId", unique = true,insertable = false,updatable = false)
     private User user;
 
     private String adminName;

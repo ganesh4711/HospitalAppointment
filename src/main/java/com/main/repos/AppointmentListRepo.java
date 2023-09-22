@@ -1,10 +1,9 @@
 package com.main.repos;
 
 import com.main.entites.AppointmentList;
+import jakarta.websocket.server.PathParam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -1,13 +1,13 @@
 package com.main.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
+
 
 @Data
 @AllArgsConstructor
@@ -22,8 +22,12 @@ public class AppointmentList {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name="doctor_id")
+    private Integer doctorId;
+
     @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
+    @JsonIgnore
+    @JoinColumn(name = "doctor_id", nullable = false ,insertable = false,updatable = false)
     private Doctor doctor;
 
     @ManyToOne

@@ -13,5 +13,5 @@ import java.util.List;
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
 	Doctor findByUser_Id(int uid);
-    List<DoctorDto> findAllByType(String type);
+    List<Doctor> findAllByType(String type);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.main.responseDto.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,6 @@ import com.main.RequestDto.UserDto;
 import com.main.service.LogService;
 import com.main.service.UserService;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -62,7 +62,7 @@ public class UserController {
                     "recordCount", allUserWithPagination.getTotalElements(),
                     "noOfPages", allUserWithPagination.getTotalPages());
 
-            return  new ResponseEntity<>(new ApiResponse<>(allUserWithPagination.getContent()),HttpStatus.OK);
+            return  new ResponseEntity<>(new ApiResponse<>(allUserWithPagination.getContent(),meta),HttpStatus.OK);
 
         } else
             return new ResponseEntity<>(new ApiResponse<>(null),HttpStatus.NO_CONTENT);
@@ -89,7 +89,7 @@ public class UserController {
                     "recordCount", allUserWithPagination.getTotalElements(),
                     "noOfPages", allUserWithPagination.getTotalPages());
 
-             return  new ResponseEntity<>(new ApiResponse<>(allUserWithPagination.getContent()),HttpStatus.OK);
+             return  new ResponseEntity<>(new ApiResponse<>(allUserWithPagination.getContent(),meta),HttpStatus.OK);
 
         } else
             return new ResponseEntity<>(new ApiResponse<>(null),HttpStatus.NO_CONTENT);

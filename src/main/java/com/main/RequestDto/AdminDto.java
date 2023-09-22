@@ -1,39 +1,24 @@
 package com.main.RequestDto;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class AdminDto {
 
  
     private Integer adminId;
-
-    //private UserDto user;
+	@NotNull(message = "user id not be null")
+    private Integer userId;
 
     private String adminName;
     private Boolean status;
-	public Integer getAdminId() {
-		return adminId;
-	}
-	public void setAdminId(Integer adminId) {
-		this.adminId = adminId;
-	}
-//	public UserDto getUser() {
-//		return user;
-//	}
-//	public void setUser(UserDto user) {
-//		this.user = user;
-//	}
-	public String getAdminName() {
-		return adminName;
-	}
-	public void setAdminName(String adminName) {
-		this.adminName = adminName;
-	}
-	public Boolean getStatus() {
-		return status;
-	}
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
+
 
    
 }

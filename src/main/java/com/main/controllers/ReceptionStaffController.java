@@ -5,13 +5,13 @@ import com.main.RequestDto.ReceptionStaffDto;
 import com.main.customExceptions.BussinessException;
 import com.main.responseDto.ApiResponse;
 import com.main.service.ReceptionStaffService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +100,7 @@ public class ReceptionStaffController {
 	 * @return staff info
 	 */
 	@PostMapping("/signup")
-	public ResponseEntity<ApiResponse<ReceptionStaffDto>> addReceptionStaff(@RequestBody @Valid ReceptionStaffDto receptionStaffDto) {
+	public ResponseEntity<ApiResponse<ReceptionStaffDto>> addReceptionStaff(@Valid @RequestBody ReceptionStaffDto receptionStaffDto) {
 		return new ResponseEntity<>(new ApiResponse<>(receptionService.addStaff(receptionStaffDto)),HttpStatus.NO_CONTENT);
 	}
 
@@ -116,13 +116,6 @@ public class ReceptionStaffController {
 		}
 		else  throw new NoSuchElementException();
 	}
-	@GetMapping("doctors/{type}")
-	public ResponseEntity<ApiResponse<List<DoctorDto>>> getDoctorsByType(@PathVariable String type){
-		List<DoctorDto> doctorsByType = receptionService.getDoctorsByType(type);
-		if (!doctorsByType.isEmpty()){
-			return new ResponseEntity<>(new ApiResponse<>(doctorsByType),HttpStatus.OK);
-		}
-		else throw new BussinessException("Invalid type");
-	}
+
 
 }

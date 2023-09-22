@@ -10,13 +10,13 @@ import com.main.repos.AppointmentListRepo;
 import com.main.repos.AppointmentRepository;
 import com.main.repos.DoctorRepository;
 import com.main.repos.PatientRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class AppointmentListService {
                 .map(this::convertEntityToDto)
                 .toList();
     }
-    public AppointmentListDto appointmentRequest(AppointmentListDto appointmentListDto) {
+    public AppointmentListDto appointmentRequest(@Valid AppointmentListDto appointmentListDto) {
 
         if (appointmentListDto == null) {
             throw new IllegalArgumentException("Appointment data cannot be null");

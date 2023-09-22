@@ -1,31 +1,27 @@
 package com.main.service;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.main.RequestDto.AppointmentListDto;
 import com.main.RequestDto.DoctorDto;
-import com.main.RequestDto.PatientDto;
-import com.main.entites.*;
+import com.main.RequestDto.ReceptionStaffDto;
 import com.main.customExceptions.BussinessException;
-import com.main.repos.*;
+import com.main.entites.Doctor;
+import com.main.entites.ReceptionStaff;
+import com.main.entites.User;
+import com.main.repos.DoctorRepository;
+import com.main.repos.ReceptionStaffRepository;
+import com.main.repos.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.main.RequestDto.ReceptionStaffDto;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -35,6 +31,7 @@ public class ReceptionStaffService {
     private final ReceptionStaffRepository receptionRepo;
     private final DoctorRepository doctorRepository;
     private final UserRepository userRepository;
+    private final DoctorService doctorService;
 
 
 
@@ -101,15 +98,13 @@ public class ReceptionStaffService {
     }
 
     public ReceptionStaffDto addStaff(ReceptionStaffDto receptionStaffDto) {
-        User user = userRepository.findById(25).get();
+        User user = userRepository.findById(receptionStaffDto.getUser().getUserId()).get();
         if (user.getStatus()) {
-            if (receptionStaffDto != null) {
-                receptionStaffDto.setStaffName(user.getName());
-                receptionStaffDto.setStatus(true);
-                ReceptionStaff staff = converDtoToEntity(receptionStaffDto);
-                return convertEntityToDto(receptionRepo.save(staff));
+            receptionStaffDto.setStaffName(user.getName());
+            receptionStaffDto.setStatus(true);
+            ReceptionStaff staff = converDtoToEntity(receptionStaffDto);
+            return convertEntityToDto(receptionRepo.save(staff));
 
-            } else throw new BussinessException("Patient Must not Be Null");
         } else throw new BussinessException("Deactivated User Unable to Process...");
     }
 
@@ -123,16 +118,13 @@ public class ReceptionStaffService {
             ReceptionStaff receptionStaff = optional.get();
             if (receptionStaff.getStatus()) {
                 receptionStaff.setStatus(false);
+                receptionRepo.save(receptionStaff);
                 return true;
             }
         } else
             return false;
 
         return false;
-    }
-
-    public List<DoctorDto> getDoctorsByType(String type) {
-        return doctorRepository.findAllByType(type);
     }
 
 

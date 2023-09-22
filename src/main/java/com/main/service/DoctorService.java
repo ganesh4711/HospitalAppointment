@@ -140,5 +140,12 @@ public class DoctorService {
 			return false;
 	}
 
+	public List<DoctorDto> getDoctorsByType(String type) {
+		List<Doctor> doctorsByType = doctorRepo.findAllByType(type);
+		return doctorsByType.stream()
+				.map(this::convertEntityToDto)
+				.collect(Collectors.toList());
+	}
+
 
 }

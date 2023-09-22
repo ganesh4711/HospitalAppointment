@@ -1,17 +1,16 @@
 package com.main.RequestDto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
+
 
 @Data
 @AllArgsConstructor
@@ -29,7 +28,7 @@ public class AppointmentListDto {
     private Integer receptionStaffId;
 
     @NotNull(message = "Date not be null")
-    @JsonFormat(pattern = "MM/dd/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateOfAppointment;
     @NotNull(message = "Date not be null")
     @DateTimeFormat(pattern = "HH:mm")

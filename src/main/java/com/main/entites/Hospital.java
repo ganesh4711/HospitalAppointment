@@ -1,19 +1,8 @@
 package com.main.entites;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.apache.tomcat.jni.Address;
-
-import lombok.Data;
 
 @Entity
 @Table(name="hospitals")
