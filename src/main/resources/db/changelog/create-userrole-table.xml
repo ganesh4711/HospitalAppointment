@@ -19,7 +19,6 @@
         </createTable>
     </changeSet>
 
-
     <changeSet id="addForeignKeyConstraints-user_roles" author="ganesh">
         <addForeignKeyConstraint baseTableName="user_roles"
                                  baseColumnNames="user_id"
@@ -35,4 +34,7 @@
                                  onDelete="CASCADE"/>
     </changeSet>
 
+    <changeSet id="constraint-update" author="ganesh">
+        <dropUniqueConstraint tableName="user_roles" constraintName="user_roles_user_id_key" />
+    </changeSet>
 </databaseChangeLog>

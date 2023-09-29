@@ -30,7 +30,7 @@ public class User {
     @Column(columnDefinition = "boolean default 'true'")
     private Boolean status;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     @JsonIgnore
     private List<UserRole> userRoles;
 

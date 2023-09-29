@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.main.RequestDto.UserDto;
@@ -41,8 +43,9 @@ public class UserService {
      * @return user info
      */
     public UserDto getUserDetails() {
-        int userId = 20;     //SecurityContextHolder.getContext().getAuthentication().authentication.getName();
-        User user = userRepository.findById(userId).get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String mail=authentication.getName();
+        User user = userRepository.findByEmail(mail).get();
 
         return convertEntityToDto(user);
     }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.main.RequestDto.UserDto;
 import com.main.service.LogService;
@@ -38,6 +39,7 @@ public class UserController {
      * @return all users
      */
     @GetMapping("/all")   //admin
+    @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers() {
         return  new ResponseEntity<>(new ApiResponse<>(userService.getAllUsers()),HttpStatus.OK);
     }
