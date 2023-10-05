@@ -70,12 +70,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+		<!-- swagger -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.4</version>
 		</dependency>
-
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version> <!-- Use the latest version available -->
+		</dependency>
 		<!-- SECURITY JWT-->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

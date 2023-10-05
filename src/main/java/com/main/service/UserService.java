@@ -3,6 +3,9 @@ package com.main.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,24 +23,45 @@ import com.main.customExceptions.BussinessException;
 import com.main.repos.UserRepository;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
+
     private UserRepository userRepository;
-    @Autowired
+
     private LogService logService;
-    @Autowired
+
     private ModelMapper modelmapper;
+
+
 
     public UserDto convertEntityToDto(User user) {
 
         return modelmapper.map(user, UserDto.class);
     }
-
-    public User convertDtoToEntity(UserDto userdto) {
-
-        return modelmapper.map(userdto, User.class);
+    public UserDto convertToDto(User user){
+        return UserDto.builder()
+                .userId(user.getId())
+                .name(user.getName())
+                .address(user.getAddress())
+                .password(user.getPassword())
+                .phNo(user.getPhNo())
+                .email(user.getEmail())
+                .build();
     }
+
+    private User convertToUser(UserDto userDto){
+        return User.builder()
+                .id(userDto.getUserId())
+                .name(userDto.getName())
+                .address(userDto.getAddress())
+                .password(userDto.getPassword())
+                .phNo(userDto.getPhNo())
+                .email(userDto.getEmail())
+                .build();
+    }
+
 
     /**
      * @return user info
@@ -47,7 +71,7 @@ public class UserService {
         String mail=authentication.getName();
         User user = userRepository.findByEmail(mail).get();
 
-        return convertEntityToDto(user);
+        return convertToDto(user);
     }
 
     /**
@@ -56,7 +80,7 @@ public class UserService {
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(this::convertEntityToDto)
+                .map(this::convertToDto)
                 .toList();
     }
 
@@ -83,7 +107,7 @@ public class UserService {
 
     /**
      * @param offSet   page
-     * @param pagesize of the page
+     * @param pagesize-size of the page
      * @param field    to be sorted
      * @return page
      */
@@ -113,7 +137,7 @@ public class UserService {
     public UserDto createUser(UserDto userdto) {
 
         if (userdto != null) {
-            User user = convertDtoToEntity(userdto);
+            User user =convertToUser(userdto);
             userRepository.save(user);
             logService.logUserCreation(user.getId());
             return userdto;
